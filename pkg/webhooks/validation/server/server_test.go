@@ -29,7 +29,7 @@ import (
 	"testing"
 	"time"
 
-	kubeApiAdmission "k8s.io/api/admission/v1beta1"
+	kubeApiAdmission "k8s.io/api/admission/v1"
 	kubeApisMeta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"

@@ -24,7 +24,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/hashicorp/go-multierror"
-	kubeApiAdmission "k8s.io/api/admission/v1beta1"
+	kubeApiAdmission "k8s.io/api/admission/v1"
 	kubeApiApps "k8s.io/api/apps/v1beta1"
 	kubeApisMeta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

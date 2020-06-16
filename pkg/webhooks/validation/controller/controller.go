@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-multierror"
-	kubeApiAdmission "k8s.io/api/admissionregistration/v1beta1"
+	kubeApiAdmission "k8s.io/api/admissionregistration/v1"
 	kubeApiCore "k8s.io/api/core/v1"
 	kubeErrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -260,7 +260,7 @@ func newController(
 	c.sharedInformers = informers.NewSharedInformerFactoryWithOptions(client, o.ResyncPeriod,
 		informers.WithNamespace(o.WatchedNamespace))
 
-	webhookInformer := c.sharedInformers.Admissionregistration().V1beta1().ValidatingWebhookConfigurations().Informer()
+	webhookInformer := c.sharedInformers.Admissionregistration().V1().ValidatingWebhookConfigurations().Informer()
 	webhookInformer.AddEventHandler(makeHandler(c.queue, configGVK, o.WebhookConfigName))
 
 	if !o.RemoteWebhookConfig {
@@ -462,7 +462,7 @@ func isEndpointReady(endpoint *kubeApiCore.Endpoints) (ready bool, reason string
 }
 
 func (c *Controller) updateValidatingWebhookConfiguration(caBundle []byte, failurePolicy kubeApiAdmission.FailurePolicyType) error {
-	current, err := c.sharedInformers.Admissionregistration().V1beta1().
+	current, err := c.sharedInformers.Admissionregistration().V1().
 		ValidatingWebhookConfigurations().Lister().Get(c.o.WebhookConfigName)
 
 	if err != nil {
@@ -485,7 +485,7 @@ func (c *Controller) updateValidatingWebhookConfiguration(caBundle []byte, failu
 	}
 
 	if !reflect.DeepEqual(updated, current) {
-		latest, err := c.client.AdmissionregistrationV1beta1().
+		latest, err := c.client.AdmissionregistrationV1().
 			ValidatingWebhookConfigurations().Update(context.TODO(), updated, kubeApiMeta.UpdateOptions{})
 		if err != nil {
 			scope.Errorf("Failed to update validatingwebhookconfiguration %v (failurePolicy=%v, resourceVersion=%v): %v",
